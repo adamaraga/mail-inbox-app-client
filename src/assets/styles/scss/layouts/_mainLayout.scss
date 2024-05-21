@@ -1,0 +1,17 @@
+.mainLayout {
+  padding: 3rem;
+  background-color: rgb(246, 246, 246);
+  padding-top: 7rem;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__main {
+    background-color: #fff;
+    padding: 5rem 3rem;
+    border-radius: 10px;
+    border: 1px solid #dcdcdc;
+    max-width: 70rem;
+  }
+}

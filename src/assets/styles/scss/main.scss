@@ -1,0 +1,67 @@
+:root {
+  font-size: 62.5%;
+}
+
+@import "abstracts/variable";
+
+@import "layouts/mainLayout";
+
+@import "components/topbar";
+
+@import "pages/home";
+@import "pages/inbox";
+
+*,
+::before,
+::after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-size: 1.6rem;
+  font-family: "Inter", sans-serif;
+  color: $text-color;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: $text-color;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+.buttonMain {
+  background: $primary-color;
+  border-radius: 5px;
+  min-width: 15.6rem;
+  height: 5.6rem;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+
+  &:hover {
+    background: $primary-colorAlt;
+  }
+}
