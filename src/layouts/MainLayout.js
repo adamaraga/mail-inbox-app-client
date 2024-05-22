@@ -8,25 +8,23 @@ import ReactLoading from "react-loading";
 import { userFetchSuccess } from "../context/Action";
 
 const MainLayout = () => {
-  const { dispatch, user } = useContext(Context);
+  const { dispatch } = useContext(Context);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const handleFeatchUser = async () => {
-      if (!user._id) {
-        setLoading(true);
-        try {
-          const res = await fetchUser();
-          dispatch(userFetchSuccess(res.data));
-          setLoading(false);
-        } catch (err) {
-          setLoading(false);
-          const message =
-            (err.response && err.response.data && err.response.data.message) ||
-            err.message ||
-            err.toString();
-          toast.error(message);
-        }
+      setLoading(true);
+      try {
+        const res = await fetchUser();
+        dispatch(userFetchSuccess(res.data));
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        const message =
+          (err.response && err.response.data && err.response.data.message) ||
+          err.message ||
+          err.toString();
+        toast.error(message);
       }
     };
 
