@@ -11,20 +11,24 @@ const MainLayout = () => {
   const { dispatch } = useContext(Context);
   const [loading, setLoading] = useState(false);
 
+  const user = JSON.parse(localStorage.getItem("user")) || null;
+
   useEffect(() => {
     const handleFeatchUser = async () => {
-      setLoading(true);
-      try {
-        const res = await fetchUser();
-        dispatch(userFetchSuccess(res.data));
-        setLoading(false);
-      } catch (err) {
-        setLoading(false);
-        const message =
-          (err.response && err.response.data && err.response.data.message) ||
-          err.message ||
-          err.toString();
-        toast.error(message);
+      if (!user?._id) {
+        setLoading(true);
+        try {
+          const res = await fetchUser();
+          dispatch(userFetchSuccess(res.data));
+          setLoading(false);
+        } catch (err) {
+          setLoading(false);
+          const message =
+            (err.response && err.response.data && err.response.data.message) ||
+            err.message ||
+            err.toString();
+          toast.error(message);
+        }
       }
     };
 
