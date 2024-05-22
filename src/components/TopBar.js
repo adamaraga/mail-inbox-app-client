@@ -12,7 +12,7 @@ const TopBar = () => {
 
   useEffect(() => {
     const handleMessageCount = async () => {
-      if (pathname !== "/") {
+      if (pathname !== "/" && user?._id) {
         try {
           const res = await fetchUserMessageCount(user?._id);
           dispatch(countFetchSuccess(res.data));

@@ -13,18 +13,20 @@ const Home = () => {
 
   useEffect(() => {
     const handleMessageCount = async () => {
-      setLoading(true);
-      try {
-        const res = await fetchUserMessageCount(user?._id);
-        dispatch(countFetchSuccess(res.data));
-        setLoading(false);
-      } catch (err) {
-        setLoading(false);
-        const message =
-          (err.response && err.response.data && err.response.data.message) ||
-          err.message ||
-          err.toString();
-        toast.error(message);
+      if (user?._id) {
+        setLoading(true);
+        try {
+          const res = await fetchUserMessageCount(user?._id);
+          dispatch(countFetchSuccess(res.data));
+          setLoading(false);
+        } catch (err) {
+          setLoading(false);
+          const message =
+            (err.response && err.response.data && err.response.data.message) ||
+            err.message ||
+            err.toString();
+          toast.error(message);
+        }
       }
     };
 

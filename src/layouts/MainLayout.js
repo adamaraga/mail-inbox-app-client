@@ -9,11 +9,12 @@ import { userFetchSuccess } from "../context/Action";
 
 const MainLayout = () => {
   const { dispatch, user } = useContext(Context);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const handleFeatchUser = async () => {
       if (!user._id) {
+        setLoading(true);
         try {
           const res = await fetchUser();
           dispatch(userFetchSuccess(res.data));
@@ -26,8 +27,6 @@ const MainLayout = () => {
             err.toString();
           toast.error(message);
         }
-      } else {
-        setLoading(false);
       }
     };
 
