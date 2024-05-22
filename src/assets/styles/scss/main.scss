@@ -10,6 +10,7 @@
 
 @import "pages/home";
 @import "pages/inbox";
+@import "pages/notFound";
 
 *,
 ::before,
@@ -27,7 +28,6 @@ body {
   font-size: 1.6rem;
   font-family: "Inter", sans-serif;
   color: $text-color;
-  overflow-x: hidden;
 }
 
 a {

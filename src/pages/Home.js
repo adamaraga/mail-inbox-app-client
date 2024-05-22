@@ -11,26 +11,30 @@ const Home = () => {
   const { dispatch, user, messagesCount } = useContext(Context);
   const [loading, setLoading] = useState(false);
 
-  const handleMessageCount = async () => {
-    setLoading(true);
-    try {
-      const res = await fetchUserMessageCount(user?._id);
-      dispatch(countFetchSuccess(res.data));
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      toast.error("Fetch failed");
-    }
-  };
-
   useEffect(() => {
+    const handleMessageCount = async () => {
+      setLoading(true);
+      try {
+        const res = await fetchUserMessageCount(user?._id);
+        dispatch(countFetchSuccess(res.data));
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        const message =
+          (err.response && err.response.data && err.response.data.message) ||
+          err.message ||
+          err.toString();
+        toast.error(message);
+      }
+    };
+
     handleMessageCount();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, user?._id]);
 
   return (
     <div className="home">
       <h1 className="home__title">Hello {user?.firstName}</h1>
+
       {loading ? (
         <ReactLoading color="#0092ff" width={50} height={50} type="spin" />
       ) : messagesCount?.total > 0 ? (

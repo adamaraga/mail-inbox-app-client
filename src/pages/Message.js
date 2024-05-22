@@ -10,39 +10,42 @@ const Message = () => {
   const [loading, setLoading] = useState(false);
 
   const { id } = useParams();
-  const { dispatch, message, messagesCount } = useContext(Context);
+  const { dispatch, message } = useContext(Context);
 
   useEffect(() => {
     const handleFetchMessage = async () => {
       setLoading(true);
       try {
         const res = await fetchUserMessage(id);
-        if (res.data) {
-          if (!res.data?.isRead) {
-            try {
-              const response = await updateReadStatus(id);
-              if (response.data) {
-                dispatch(updateReadSuccess());
-              }
 
-              dispatch(messageFetchSuccess(res.data));
-              setLoading(false);
-            } catch (error) {
-              dispatch(messageFetchSuccess(res.data));
-              setLoading(false);
+        if (!res.data?.isRead) {
+          try {
+            const response = await updateReadStatus(id);
+            if (response.data) {
+              dispatch(updateReadSuccess());
             }
+            setLoading(false);
+          } catch (error) {
+            setLoading(false);
           }
+        } else {
+          setLoading(false);
         }
+
+        dispatch(messageFetchSuccess(res.data));
       } catch (err) {
         setLoading(false);
-        toast.error("Fetch failed");
+        const message =
+          (err.response && err.response.data && err.response.data.message) ||
+          err.message ||
+          err.toString();
+        toast.error(message);
       }
     };
 
     handleFetchMessage();
   }, [dispatch, id]);
 
-  console.log("messsageCount", messagesCount);
   return (
     <div className="message">
       {loading ? (

@@ -5,27 +5,31 @@ import { Context } from "../context/MainContext";
 import { toast } from "react-toastify";
 import { messagesFetchSuccess } from "../context/Action";
 import ReactLoading from "react-loading";
+import InboxItemCard from "../components/InboxItemCard";
 
 const Inbox = () => {
   const [loading, setLoading] = useState(false);
   const { dispatch, user, messages } = useContext(Context);
 
-  const handleFetchMessages = async () => {
-    setLoading(true);
-    try {
-      const res = await fetchUserMessages(user?._id);
-      dispatch(messagesFetchSuccess(res.data));
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      toast.error("Fetch failed");
-    }
-  };
-
   useEffect(() => {
+    const handleFetchMessages = async () => {
+      setLoading(true);
+      try {
+        const res = await fetchUserMessages(user?._id);
+        dispatch(messagesFetchSuccess(res.data));
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        const message =
+          (err.response && err.response.data && err.response.data.message) ||
+          err.message ||
+          err.toString();
+        toast.error(message);
+      }
+    };
+
     handleFetchMessages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, user?._id]);
 
   return (
     <div className="inbox">
@@ -38,16 +42,7 @@ const Inbox = () => {
           {messages?.map((message) => {
             return (
               <Link key={message._id} to={`/message/${message._id}`}>
-                <div
-                  className={
-                    message.isRead
-                      ? "inbox__main__item"
-                      : "inbox__main__item unread"
-                  }
-                >
-                  <h3>{message?.subject}</h3>
-                  <p>{message?.content.substring(0, 25)}... </p>
-                </div>
+                <InboxItemCard message={message} />
               </Link>
             );
           })}

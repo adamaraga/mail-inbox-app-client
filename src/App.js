@@ -6,6 +6,7 @@ import "./assets/styles/scss/main.scss";
 import MainLayout from "./layouts/MainLayout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
       <ToastContainer position="top-right" />
       <Router>
         <Routes>
-          <Route path="*" element={<div>"page not found"</div>} />
+          <Route path="*" element={<NotFound />} />
 
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />

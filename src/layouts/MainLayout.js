@@ -8,26 +8,31 @@ import ReactLoading from "react-loading";
 import { userFetchSuccess } from "../context/Action";
 
 const MainLayout = () => {
-  const { dispatch } = useContext(Context);
+  const { dispatch, user } = useContext(Context);
   const [loading, setLoading] = useState(true);
 
-  const handleFeatchUser = async () => {
-    setLoading(true);
-
-    try {
-      const res = await fetchUser();
-      dispatch(userFetchSuccess(res.data));
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      toast.error("Fetch failed");
-    }
-  };
-
   useEffect(() => {
+    const handleFeatchUser = async () => {
+      if (!user._id) {
+        try {
+          const res = await fetchUser();
+          dispatch(userFetchSuccess(res.data));
+          setLoading(false);
+        } catch (err) {
+          setLoading(false);
+          const message =
+            (err.response && err.response.data && err.response.data.message) ||
+            err.message ||
+            err.toString();
+          toast.error(message);
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+
     handleFeatchUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, user._id]);
 
   return (
     <div className="mainLayout">

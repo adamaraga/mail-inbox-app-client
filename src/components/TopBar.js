@@ -10,21 +10,24 @@ const TopBar = () => {
   const { dispatch, user, messagesCount } = useContext(Context);
   const { pathname } = useLocation();
 
-  const handleMessageCount = async () => {
-    if (pathname !== "/") {
-      try {
-        const res = await fetchUserMessageCount(user?._id);
-        dispatch(countFetchSuccess(res.data));
-      } catch (err) {
-        toast.error("Fetch failed");
-      }
-    }
-  };
-
   useEffect(() => {
+    const handleMessageCount = async () => {
+      if (pathname !== "/") {
+        try {
+          const res = await fetchUserMessageCount(user?._id);
+          dispatch(countFetchSuccess(res.data));
+        } catch (err) {
+          const message =
+            (err.response && err.response.data && err.response.data.message) ||
+            err.message ||
+            err.toString();
+          toast.error(message);
+        }
+      }
+    };
+
     handleMessageCount();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user?._id, dispatch, pathname]);
 
   return (
     <div className="topbar">
