@@ -4,10 +4,13 @@ import Inbox from "./pages/Inbox";
 import Message from "./pages/Message";
 import "./assets/styles/scss/main.scss";
 import MainLayout from "./layouts/MainLayout";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <div className="App">
+      <ToastContainer position="top-right" />
       <Router>
         <Routes>
           <Route path="*" element={<div>"page not found"</div>} />
