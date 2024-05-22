@@ -32,7 +32,9 @@ const MainLayout = () => {
     };
 
     handleFeatchUser();
-  }, [dispatch, user._id]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   return (
     <div className="mainLayout">
