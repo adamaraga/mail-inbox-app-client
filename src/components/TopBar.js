@@ -37,8 +37,16 @@ const TopBar = () => {
       <div className="topbar__main">
         <Link to="/inbox">
           <div className="topbar__main__message">
-            <img src={MessageIcon} alt="" />
-            {messagesCount?.unread > 0 && <span>{messagesCount?.unread}</span>}
+            <img
+              className="topbar__main__message__icon"
+              src={MessageIcon}
+              alt=""
+            />
+            {messagesCount?.unread > 0 && (
+              <span className="topbar__main__message__num">
+                {messagesCount?.unread}
+              </span>
+            )}
           </div>
         </Link>
 

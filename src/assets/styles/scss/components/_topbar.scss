@@ -21,11 +21,11 @@
       position: relative;
       cursor: pointer;
 
-      & img {
+      &__icon {
         height: 4rem;
       }
 
-      & span {
+      &__num {
         position: absolute;
         right: -0.5rem;
         top: 0rem;
