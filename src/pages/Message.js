@@ -10,17 +10,17 @@ const Message = () => {
   const [loading, setLoading] = useState(false);
 
   const { id } = useParams();
-  const { dispatch, message } = useContext(Context);
+  const { dispatch, message, user } = useContext(Context);
 
   useEffect(() => {
     const handleFetchMessage = async () => {
       setLoading(true);
       try {
-        const res = await fetchUserMessage(id);
+        const res = await fetchUserMessage(id, user?._id);
 
         if (!res.data?.isRead) {
           try {
-            const response = await updateReadStatus(id);
+            const response = await updateReadStatus(id, user?._id);
             if (response.data) {
               dispatch(updateReadSuccess());
             }
