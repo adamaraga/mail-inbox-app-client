@@ -44,7 +44,7 @@ const Message = () => {
     };
 
     handleFetchMessage();
-  }, [dispatch, id]);
+  }, [dispatch, id, user?._id]);
 
   return (
     <div className="message">
