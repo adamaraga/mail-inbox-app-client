@@ -2,9 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Context } from "../context/MainContext";
 import { messageFetchSuccess, updateReadSuccess } from "../context/Action";
-import { fetchUserMessage, updateReadStatus } from "../api/main";
-import { toast } from "react-toastify";
+import { fetchUserMessage, updateReadStatus } from "../api/apiCalls";
 import ReactLoading from "react-loading";
+import { fetchRequest, fetchSilentRequest } from "../api/RequestMain";
+import BackButton from "../components/BackButton";
 
 const Message = () => {
   const [loading, setLoading] = useState(false);
@@ -13,41 +14,26 @@ const Message = () => {
   const { dispatch, message, user } = useContext(Context);
 
   useEffect(() => {
-    const handleFetchMessage = async () => {
-      setLoading(true);
-      try {
-        const res = await fetchUserMessage(id, user?._id);
-
+    if (user?._id) {
+      const apiCall = fetchUserMessage(id, user?._id);
+      const onSucess = async (res) => {
         if (!res.data?.isRead) {
-          try {
-            const response = await updateReadStatus(id, user?._id);
-            if (response.data) {
-              dispatch(updateReadSuccess());
-            }
-            setLoading(false);
-          } catch (error) {
-            setLoading(false);
-          }
-        } else {
-          setLoading(false);
+          const apiCallAlt = updateReadStatus(id, user?._id);
+          const onSucessAlt = async () => {
+            dispatch(updateReadSuccess());
+          };
+          fetchSilentRequest(onSucessAlt, apiCallAlt);
         }
-
         dispatch(messageFetchSuccess(res.data));
-      } catch (err) {
-        setLoading(false);
-        const message =
-          (err.response && err.response.data && err.response.data.message) ||
-          err.message ||
-          err.toString();
-        toast.error(message);
-      }
-    };
-
-    handleFetchMessage();
+      };
+      fetchRequest(setLoading, onSucess, apiCall);
+    }
   }, [dispatch, id, user?._id]);
 
   return (
     <div className="message">
+      <BackButton to="/inbox" />
+
       {loading ? (
         <ReactLoading color="#0092ff" width={50} height={50} type="spin" />
       ) : (

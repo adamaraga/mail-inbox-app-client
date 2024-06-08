@@ -2,35 +2,24 @@ import React, { useContext, useEffect, useState } from "react";
 import Button from "../common/Button";
 import { Link } from "react-router-dom";
 import { Context } from "../context/MainContext";
-import { fetchUserMessageCount } from "../api/main";
+import { fetchUserMessageCount } from "../api/apiCalls";
 import { countFetchSuccess } from "../context/Action";
-import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
+import { fetchRequest } from "../api/RequestMain";
 
 const Home = () => {
   const { dispatch, user, messagesCount } = useContext(Context);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const handleMessageCount = async () => {
-      if (user?._id) {
-        setLoading(true);
-        try {
-          const res = await fetchUserMessageCount(user?._id);
-          dispatch(countFetchSuccess(res.data));
-          setLoading(false);
-        } catch (err) {
-          setLoading(false);
-          const message =
-            (err.response && err.response.data && err.response.data.message) ||
-            err.message ||
-            err.toString();
-          toast.error(message);
-        }
-      }
-    };
+    if (user?._id) {
+      const apiCall = fetchUserMessageCount(user?._id);
+      const onSucess = (res) => {
+        dispatch(countFetchSuccess(res.data));
+      };
 
-    handleMessageCount();
+      fetchRequest(setLoading, onSucess, apiCall);
+    }
   }, [dispatch, user?._id]);
 
   return (

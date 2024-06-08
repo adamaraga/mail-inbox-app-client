@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import { Context } from "../context/MainContext";
-import { fetchUser } from "../api/main";
-import { toast } from "react-toastify";
+import { fetchUser } from "../api/apiCalls";
 import ReactLoading from "react-loading";
 import { userFetchSuccess } from "../context/Action";
+import { fetchRequest } from "../api/RequestMain";
 
 const MainLayout = () => {
   const { dispatch } = useContext(Context);
@@ -14,25 +14,14 @@ const MainLayout = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;
 
   useEffect(() => {
-    const handleFeatchUser = async () => {
-      if (!user?._id) {
-        setLoading(true);
-        try {
-          const res = await fetchUser();
-          dispatch(userFetchSuccess(res.data));
-          setLoading(false);
-        } catch (err) {
-          setLoading(false);
-          const message =
-            (err.response && err.response.data && err.response.data.message) ||
-            err.message ||
-            err.toString();
-          toast.error(message);
-        }
-      }
-    };
+    if (!user?._id) {
+      const apiCall = fetchUser();
+      const onSucess = (res) => {
+        dispatch(userFetchSuccess(res.data));
+      };
 
-    handleFeatchUser();
+      fetchRequest(setLoading, onSucess, apiCall);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);

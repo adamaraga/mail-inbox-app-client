@@ -11,6 +11,7 @@
 
 @import "pages/home";
 @import "pages/inbox";
+@import "pages/message";
 @import "pages/notFound";
 
 *,
@@ -64,5 +65,22 @@ h6 {
 
   &:hover {
     background: $primary-colorAlt;
+  }
+}
+
+.backButton {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1px solid #d1d1d1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & img {
+    width: 20px;
   }
 }

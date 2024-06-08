@@ -20,6 +20,6 @@ export const fetchUserMessage = (id, userId) => {
 
 export const updateReadStatus = (id, userId) => {
   return axios.put(`${apiURLMain}/api/messages/read-update/${id}/${userId}`, {
-    isRead: "true",
+    isRead: true,
   });
 };

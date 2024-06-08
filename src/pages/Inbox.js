@@ -1,39 +1,32 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchUserMessages } from "../api/main";
+import { fetchUserMessages } from "../api/apiCalls";
 import { Context } from "../context/MainContext";
-import { toast } from "react-toastify";
 import { messagesFetchSuccess } from "../context/Action";
 import ReactLoading from "react-loading";
 import InboxItemCard from "../components/InboxItemCard";
+import { fetchRequest } from "../api/RequestMain";
+import BackButton from "../components/BackButton";
 
 const Inbox = () => {
   const [loading, setLoading] = useState(false);
   const { dispatch, user, messages } = useContext(Context);
 
   useEffect(() => {
-    const handleFetchMessages = async () => {
-      setLoading(true);
-      try {
-        const res = await fetchUserMessages(user?._id);
+    if (user?._id) {
+      const apiCall = fetchUserMessages(user?._id);
+      const onSucess = (res) => {
         dispatch(messagesFetchSuccess(res.data));
-        setLoading(false);
-      } catch (err) {
-        setLoading(false);
-        const message =
-          (err.response && err.response.data && err.response.data.message) ||
-          err.message ||
-          err.toString();
-        toast.error(message);
-      }
-    };
+      };
 
-    handleFetchMessages();
+      fetchRequest(setLoading, onSucess, apiCall);
+    }
   }, [dispatch, user?._id]);
 
   return (
     <div className="inbox">
-      <h1>Messages</h1>
+      <BackButton to="/" />
+      <h1 className="inbox__title">Messages</h1>
 
       {loading ? (
         <ReactLoading color="#0092ff" width={50} height={50} type="spin" />

@@ -1,6 +1,10 @@
 .inbox {
   min-width: 400px;
 
+  &__title {
+    margin-top: 20px;
+  }
+
   &__main {
     border-radius: 10px;
     margin-top: 40px;

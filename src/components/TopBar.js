@@ -1,32 +1,24 @@
 import React, { useContext, useEffect } from "react";
-import MessageIcon from "../assets/images/mail.svg";
+import messageIcon from "../assets/images/mail.svg";
 import { Link, useLocation } from "react-router-dom";
 import { Context } from "../context/MainContext";
-import { toast } from "react-toastify";
 import { countFetchSuccess } from "../context/Action";
-import { fetchUserMessageCount } from "../api/main";
+import { fetchUserMessageCount } from "../api/apiCalls";
+import { fetchRequestWithoutLoading } from "../api/RequestMain";
 
 const TopBar = () => {
   const { dispatch, user, messagesCount } = useContext(Context);
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const handleMessageCount = async () => {
-      if (pathname !== "/" && user?._id) {
-        try {
-          const res = await fetchUserMessageCount(user?._id);
-          dispatch(countFetchSuccess(res.data));
-        } catch (err) {
-          const message =
-            (err.response && err.response.data && err.response.data.message) ||
-            err.message ||
-            err.toString();
-          toast.error(message);
-        }
-      }
-    };
+    if (pathname !== "/" && user?._id) {
+      const apiCall = fetchUserMessageCount(user?._id);
+      const onSucess = (res) => {
+        dispatch(countFetchSuccess(res.data));
+      };
 
-    handleMessageCount();
+      fetchRequestWithoutLoading(onSucess, apiCall);
+    }
   }, [user?._id, dispatch, pathname]);
 
   return (
@@ -39,7 +31,7 @@ const TopBar = () => {
           <div className="topbar__main__message">
             <img
               className="topbar__main__message__icon"
-              src={MessageIcon}
+              src={messageIcon}
               alt=""
             />
             {messagesCount?.unread > 0 && (
