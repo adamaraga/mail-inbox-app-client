@@ -3,9 +3,9 @@ import { Outlet } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import { Context } from "../context/MainContext";
 import { fetchUser } from "../api/apiCalls";
-import ReactLoading from "react-loading";
 import { userFetchSuccess } from "../context/Action";
 import { fetchRequest } from "../api/RequestMain";
+import Loader from "../components/Loader";
 
 const MainLayout = () => {
   const { dispatch } = useContext(Context);
@@ -29,7 +29,7 @@ const MainLayout = () => {
   return (
     <div className="mainLayout">
       {loading ? (
-        <ReactLoading color="#0092ff" width={50} height={50} type="spin" />
+        <Loader />
       ) : (
         <>
           <TopBar />

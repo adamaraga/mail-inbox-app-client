@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { fetchUserMessages } from "../api/apiCalls";
 import { Context } from "../context/MainContext";
 import { messagesFetchSuccess } from "../context/Action";
-import ReactLoading from "react-loading";
 import InboxItemCard from "../components/InboxItemCard";
 import { fetchRequest } from "../api/RequestMain";
 import BackButton from "../components/BackButton";
+import Loader from "../components/Loader";
 
 const Inbox = () => {
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ const Inbox = () => {
       <h1 className="inbox__title">Messages</h1>
 
       {loading ? (
-        <ReactLoading color="#0092ff" width={50} height={50} type="spin" />
+        <Loader />
       ) : (
         <div className="inbox__main">
           {messages?.map((message) => {

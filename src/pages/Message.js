@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import { Context } from "../context/MainContext";
 import { messageFetchSuccess, updateReadSuccess } from "../context/Action";
 import { fetchUserMessage, updateReadStatus } from "../api/apiCalls";
-import ReactLoading from "react-loading";
 import { fetchRequest, fetchSilentRequest } from "../api/RequestMain";
 import BackButton from "../components/BackButton";
+import Loader from "../components/Loader";
 
 const Message = () => {
   const [loading, setLoading] = useState(false);
@@ -35,7 +35,7 @@ const Message = () => {
       <BackButton to="/inbox" />
 
       {loading ? (
-        <ReactLoading color="#0092ff" width={50} height={50} type="spin" />
+        <Loader />
       ) : (
         <>
           <h1>{message?.subject}</h1>

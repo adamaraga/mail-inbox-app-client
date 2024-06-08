@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { Context } from "../context/MainContext";
 import { fetchUserMessageCount } from "../api/apiCalls";
 import { countFetchSuccess } from "../context/Action";
-import ReactLoading from "react-loading";
 import { fetchRequest } from "../api/RequestMain";
+import Loader from "../components/Loader";
 
 const Home = () => {
   const { dispatch, user, messagesCount } = useContext(Context);
@@ -27,7 +27,7 @@ const Home = () => {
       <h1 className="home__title">Hello {user?.firstName}</h1>
 
       {loading ? (
-        <ReactLoading color="#0092ff" width={50} height={50} type="spin" />
+        <Loader />
       ) : messagesCount?.total > 0 ? (
         <>
           <h2 className="home__subTitle">
